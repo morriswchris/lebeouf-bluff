@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Lebeouf's Bluff</title>
+<meta name="description" content="Scorekeeper for Lebeouf's Bluff">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#123B2E">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bluff">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="root"></div>
+<script src="app.js" defer></script>
+<script>
+/* Offline-first registration.
+   Detects a waiting service worker and lets the app prompt the user,
+   rather than swapping versions mid-game. */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+
+  var refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').then(function (reg) {
+      window.__swReg = reg;
+
+      function announce(worker) {
+        if (!worker) return;
+        window.__swWaiting = worker;
+        window.dispatchEvent(new CustomEvent('sw-update-ready'));
+      }
+
+      if (reg.waiting && navigator.serviceWorker.controller) announce(reg.waiting);
+
+      reg.addEventListener('updatefound', function () {
+        var nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', function () {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) announce(nw);
+        });
+      });
+
+      // Look for a new version on launch and hourly while open.
+      reg.update().catch(function () {});
+      setInterval(function () { reg.update().catch(function () {}); }, 60 * 60 * 1000);
+    }).catch(function () {});
+  });
+
+  window.__applyUpdate = function () {
+    if (window.__swWaiting) window.__swWaiting.postMessage('SKIP_WAITING');
+  };
+})();
+</script>
+</body>
+</html>
