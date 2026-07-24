@@ -5,7 +5,7 @@
      it's ready and the user decides when to apply it. Nothing auto-reloads
      mid-game. */
 
-const VERSION = "v6";
+const VERSION = "v7";
 const CACHE = `bluff-${VERSION}`;
 
 const CORE = [
@@ -16,6 +16,11 @@ const CORE = [
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
+  "./icons/icon-maskable-192.png",
+  "./icons/icon-maskable-512.png",
+  "./icons/apple-touch-icon.png",
+  "./favicon.ico",
+  "./favicon.png",
 ];
 
 self.addEventListener("install", (e) => {

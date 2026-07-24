@@ -10,7 +10,9 @@ app.js       the whole app, React bundled in (~159 KB, no CDN)
 styles.css   styling
 manifest.json
 sw.js        service worker — offline caching + update detection
-icons/       192, 512, and maskable 512
+icons/       standard, maskable (Android adaptive), and Apple touch
+favicon.ico  browser tab icon
+make_icons.py  regenerates every icon (needs Pillow)
 src/app.jsx  readable source (see "Editing the code" below)
 ```
 
@@ -72,11 +74,11 @@ Editing the last hand can change who wins the pot, and that updates too.
 
 ## Troubleshooting
 
-**Blank screen?** Shouldn't happen any more. The app now catches its own errors and shows a recovery screen with options to reload, clear past games, or start fresh — instead of dying silently. Saved games from older builds also migrate automatically.
-
-If a phone somehow still shows a blank page, it's serving a stale cached build: delete the home-screen icon and re-add it.
+**Blank screen?** Fixed in v3 — saved games from older builds now migrate automatically. If you're still stuck, delete the home-screen icon and re-add it.
 
 **Update never appears?** The check needs internet. Open the app once with a connection and give it a few seconds.
+
+**Wrong icon on the home screen?** Android wraps an icon in a white circle when the maskable version isn't usable. Fixed in v7 — the maskable icons now keep all artwork inside the required center-80% safe zone. Android caches home-screen icons aggressively, so **remove the shortcut and re-add it** after updating; refreshing the page won't change it.
 
 ## What it does and doesn't do
 
@@ -103,6 +105,6 @@ npx esbuild src/app.jsx --bundle --minify --format=iife \
   --outfile=app.js
 ```
 
-**Then bump `VERSION` in `sw.js`** (currently `"v6"`). That single string is what triggers the update banner on everyone's phone — if you don't change it, installed devices keep serving the old build.
+**Then bump `VERSION` in `sw.js`** (currently `"v5"`). That single string is what triggers the update banner on everyone's phone — if you don't change it, installed devices keep serving the old build.
 
 Common tweaks, all near the top of `src/app.jsx`: `HANDS` (the seven contracts), `START_NICKELS`, `MAX_PLAYERS`, `HISTORY_MAX` (how many past games to keep).
