@@ -26,14 +26,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Stage site for publishing
+        # Copy only the runtime files into dist/ so the Pages artifact
+        # doesn't include node_modules/, src/, or the build tooling.
+        run: |
+          mkdir -p dist
+          cp -r index.html app.js styles.css manifest.json sw.js \
+                favicon.ico favicon.png icons dist/
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # This is a static site (no build step); publish the repo root.
-          path: .
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment

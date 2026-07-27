@@ -96,14 +96,15 @@ Two localStorage keys: `lebeoufs-bluff-v1` (current game) and `lebeoufs-bluff-hi
 
 ## Editing the code
 
-`app.js` is the minified bundle — don't edit it directly. Edit `src/app.jsx`, then rebuild:
+`app.js` is the minified bundle (generated — it's git-ignored). Don't edit it directly. Edit `src/app.jsx`, then rebuild:
 
 ```bash
-npm install react@18.2.0 react-dom@18.2.0 esbuild
-npx esbuild src/app.jsx --bundle --minify --format=iife \
-  --target=es2018 --define:process.env.NODE_ENV=\"production\" \
-  --outfile=app.js
+npm install      # once, to pull react, react-dom, and esbuild
+npm run build    # bundles src/app.jsx -> app.js
 ```
+
+`npm run watch` rebuilds on save while you work. Deploys to GitHub Pages run
+`npm run build` automatically (see `.github/workflows/pages.yml`).
 
 **Then bump `VERSION` in `sw.js`** (currently `"v5"`). That single string is what triggers the update banner on everyone's phone — if you don't change it, installed devices keep serving the old build.
 
