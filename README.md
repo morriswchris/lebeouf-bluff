@@ -4,25 +4,34 @@ An offline-first PWA. No server, no accounts, no internet needed to play. All st
 
 ## Files
 
+Everything the site is built from lives in `src/`. `npm run build` bundles it
+into `dist/`, which is the only thing published — `dist/` is git-ignored and
+regenerated, never edited by hand.
+
 ```
-index.html   app shell + PWA meta tags + service worker registration
-app.js       the whole app, React bundled in (~159 KB, no CDN)
-styles.css   styling
-manifest.json
-sw.js        service worker — offline caching + update detection
-icons/       standard, maskable (Android adaptive), and Apple touch
-favicon.ico  browser tab icon
-make_icons.py  regenerates every icon (needs Pillow)
-src/app.jsx  readable source (see "Editing the code" below)
+src/
+  app.jsx      the whole app, React source (see "Editing the code" below)
+  index.html   app shell + PWA meta tags + service worker registration
+  styles.css   styling
+  manifest.json
+  sw.js        service worker — offline caching + update detection
+  icons/       standard, maskable (Android adaptive), and Apple touch
+  favicon.ico  browser tab icon
+  favicon.png
+build.mjs      esbuild bundle of app.jsx + copy of the static shell -> dist/
+make_icons.py  regenerates every icon into src/icons/ (needs Pillow)
 ```
 
 ## Putting it online
 
-iOS **requires HTTPS** for install-to-home-screen. Opening `index.html` as a local file won't work. Any static host does the job free:
+iOS **requires HTTPS** for install-to-home-screen. Opening the files locally
+won't work. Build first (`npm install && npm run build`), then serve `dist/`.
 
-- **Netlify Drop** — drag this folder onto https://app.netlify.com/drop. Fastest option.
-- **GitHub Pages** — push the folder, enable Pages in repo settings. (Private repos need a paid plan.)
-- **Vercel** — `vercel deploy` from inside the folder.
+- **GitHub Pages** — already wired up: every push to `main` runs
+  `.github/workflows/pages.yml`, which builds `src/` and publishes `dist/`.
+  (Set Settings → Pages → Source to "GitHub Actions" once.)
+- **Netlify Drop** — drag the built `dist/` folder onto https://app.netlify.com/drop.
+- **Vercel** — `vercel deploy dist` after building.
 
 ## Installing on a phone
 
@@ -96,16 +105,17 @@ Two localStorage keys: `lebeoufs-bluff-v1` (current game) and `lebeoufs-bluff-hi
 
 ## Editing the code
 
-`app.js` is the minified bundle (generated — it's git-ignored). Don't edit it directly. Edit `src/app.jsx`, then rebuild:
+All the source lives in `src/`. The built site in `dist/` is generated (and
+git-ignored) — never edit it directly. Edit files under `src/`, then rebuild:
 
 ```bash
 npm install      # once, to pull react, react-dom, and esbuild
-npm run build    # bundles src/app.jsx -> app.js
+npm run build    # builds src/ -> dist/
 ```
 
-`npm run watch` rebuilds on save while you work. Deploys to GitHub Pages run
-`npm run build` automatically (see `.github/workflows/pages.yml`).
+`npm run watch` rebuilds the bundle on save while you work. Deploys to GitHub
+Pages run `npm run build` automatically (see `.github/workflows/pages.yml`).
 
-**Then bump `VERSION` in `sw.js`** (currently `"v5"`). That single string is what triggers the update banner on everyone's phone — if you don't change it, installed devices keep serving the old build.
+**Then bump `VERSION` in `src/sw.js`** (currently `"v7"`). That single string is what triggers the update banner on everyone's phone — if you don't change it, installed devices keep serving the old build.
 
 Common tweaks, all near the top of `src/app.jsx`: `HANDS` (the seven contracts), `START_NICKELS`, `MAX_PLAYERS`, `HISTORY_MAX` (how many past games to keep).
