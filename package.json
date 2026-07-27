@@ -5,8 +5,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "esbuild src/app.jsx --bundle --minify --format=iife --target=es2018 --define:process.env.NODE_ENV=\\\"production\\\" --outfile=app.js",
-    "watch": "esbuild src/app.jsx --bundle --format=iife --target=es2018 --define:process.env.NODE_ENV=\\\"development\\\" --outfile=app.js --watch"
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
   },
   "dependencies": {
     "react": "^18.3.1",

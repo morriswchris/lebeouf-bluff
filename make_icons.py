@@ -79,13 +79,13 @@ def render(size, maskable=False):
     return img.resize((size, size), Image.LANCZOS)
 
 
-render(192).save("icons/icon-192.png")
-render(512).save("icons/icon-512.png")
-render(512, maskable=True).save("icons/icon-maskable-512.png")
-render(192, maskable=True).save("icons/icon-maskable-192.png")
+render(192).save("src/icons/icon-192.png")
+render(512).save("src/icons/icon-512.png")
+render(512, maskable=True).save("src/icons/icon-maskable-512.png")
+render(192, maskable=True).save("src/icons/icon-maskable-192.png")
 
 # Apple touch icon: iOS applies its own rounded-rect mask and does NOT
 # like transparency, so reuse the standard (non-maskable) art.
-render(180).save("icons/apple-touch-icon.png")
+render(180).save("src/icons/apple-touch-icon.png")
 
 print("icons written")

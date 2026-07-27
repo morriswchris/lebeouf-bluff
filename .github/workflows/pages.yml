@@ -36,15 +36,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        # Emits a complete dist/ from src/ (bundled app.js + static shell).
         run: npm run build
-
-      - name: Stage site for publishing
-        # Copy only the runtime files into dist/ so the Pages artifact
-        # doesn't include node_modules/, src/, or the build tooling.
-        run: |
-          mkdir -p dist
-          cp -r index.html app.js styles.css manifest.json sw.js \
-                favicon.ico favicon.png icons dist/
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
