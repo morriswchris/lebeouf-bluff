@@ -1,0 +1,7 @@
+node_modules/
+
+# Build output — regenerated from src/ by `npm run build`.
+app.js
+
+# Publish staging dir assembled by the Pages workflow.
+dist/
