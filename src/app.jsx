@@ -27,15 +27,14 @@ const handName = (i) => `${HANDS[i].sets} of ${HANDS[i].size}`;
 
 // Wild 2s allowed per set: never more wilds than natural cards, so floor(size/2).
 // size 3 -> 1, size 4 -> 2, size 5 -> 2, size 6 -> 3.
-const WILD_WORDS = ["zero", "one", "two", "three"];
 const wildsPerSet = (size) => Math.floor(size / 2);
 
 const handDesc = (i) => {
   const { sets, size } = HANDS[i];
   const w = wildsPerSet(size);
-  const wild = `${WILD_WORDS[w]} wild 2${w === 1 ? "" : "s"}`;
+  const wild = `${w} wild${w === 1 ? "" : "s"}`;
   return sets === 1
-    ? `One set of ${size} of a kind. Up to ${wild} in it.`
+    ? `One set of ${size} of a kind. Up to ${wild}.`
     : `Two separate sets of ${size} of a kind. Up to ${wild} per set.`;
 };
 
