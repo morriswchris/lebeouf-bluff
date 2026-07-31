@@ -54,7 +54,7 @@ When a new version is found it downloads in the background and a gold **"New ver
 
 ## Using it
 
-1. **Setup** — add 2–6 players in turn order.
+1. **Setup** — add 2–12 players in turn order. The setup screen shows how many decks to shuffle in (one per three players).
 2. **Each hand** — the contract is drawn as card pips at the top, standings below. Use the −/+ nickel steppers when someone buys a discard.
 3. **End of hand** — tap "Hand's over", pick who went out (they score 0), enter everyone else's leftover card total. Point values are shown on that screen.
 4. **After hand 7** — both winners are shown: whoever went out first on the 1 of 6 takes the pot, and lowest total takes the points. Plus a hand-by-hand breakdown.

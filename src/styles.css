@@ -532,6 +532,16 @@ input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
   color: var(--ivory-dim);
 }
 .ptable td:last-child { text-align: right; font-weight: 800; color: var(--ivory); }
+.ptable th {
+  padding: 7px 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  text-align: left;
+  color: var(--ivory-dim);
+  border-bottom: 1px solid rgba(237,230,211,.2);
+}
+.ptable th:last-child { text-align: right; }
 
 /* Hand list in drawer */
 .hands { display: flex; flex-direction: column; gap: 4px; }

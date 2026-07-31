@@ -16,8 +16,12 @@ const HANDS = [
 ];
 
 const START_NICKELS = 6;
-const MAX_PLAYERS = 6;
+const MAX_PLAYERS = 12;
 const KEY = "lebeoufs-bluff-v1";
+
+// One deck covers three players (keeps the draw pile at the standard
+// two-deck / six-player comfort level). 2-3 -> 1, 4-6 -> 2, 7-9 -> 3, 10-12 -> 4.
+const decksFor = (n) => Math.max(1, Math.ceil(n / 3));
 
 const handName = (i) => `${HANDS[i].sets} of ${HANDS[i].size}`;
 
@@ -333,7 +337,7 @@ function Setup({ onStart }) {
     h(
       "p",
       { className: "hint", style: { marginBottom: "18px" } },
-      `Two to six players, seated in turn order. Everyone starts with ${START_NICKELS} nickels for the whole game.`
+      `Two to twelve players, seated in turn order. Everyone starts with ${START_NICKELS} nickels for the whole game.`
     ),
 
     h(
@@ -389,6 +393,14 @@ function Setup({ onStart }) {
             )
           )
         ),
+
+    names.length > 0 &&
+      h(
+        "p",
+        { className: "hint", style: { marginTop: "10px" } },
+        `${names.length} ${names.length === 1 ? "player" : "players"} \u00b7 ` +
+          `${decksFor(names.length)} ${decksFor(names.length) === 1 ? "deck" : "decks"}`
+      ),
 
     h(
       "button",
@@ -971,7 +983,23 @@ h("h3", null, "The game"),
         h(
           "p",
           null,
-          "Seven hands, each one harder than the last. Two decks, up to six players. Ten cards dealt to each player, the rest becomes the draw pile. The dealer flips one card to start the discard pile."
+          "Seven hands, each one harder than the last. Two to twelve players. Ten cards dealt to each player, the rest becomes the draw pile. The dealer flips one card to start the discard pile."
+        ),
+        h(
+          "p",
+          null,
+          "Shuffle in one deck for every three players so the draw pile never runs thin — the setup screen shows how many you need."
+        ),
+        h("table", { className: "ptable" },
+          h("thead", null,
+            h("tr", null, h("th", null, "Players"), h("th", null, "Decks"))
+          ),
+          h("tbody", null,
+            h("tr", null, h("td", null, "2–3"), h("td", null, "1")),
+            h("tr", null, h("td", null, "4–6"), h("td", null, "2")),
+            h("tr", null, h("td", null, "7–9"), h("td", null, "3")),
+            h("tr", null, h("td", null, "10–12"), h("td", null, "4"))
+          )
         ),
         h(
           "p",
