@@ -25,12 +25,18 @@ const decksFor = (n) => Math.max(1, Math.ceil(n / 3));
 
 const handName = (i) => `${HANDS[i].sets} of ${HANDS[i].size}`;
 
+// Wild 2s allowed per set: never more wilds than natural cards, so floor(size/2).
+// size 3 -> 1, size 4 -> 2, size 5 -> 2, size 6 -> 3.
+const WILD_WORDS = ["zero", "one", "two", "three"];
+const wildsPerSet = (size) => Math.floor(size / 2);
+
 const handDesc = (i) => {
   const { sets, size } = HANDS[i];
-  const wilds = sets === 1 ? "1 wild card" : `${sets} wild cards, 1 per set`;
+  const w = wildsPerSet(size);
+  const wild = `${WILD_WORDS[w]} wild 2${w === 1 ? "" : "s"}`;
   return sets === 1
-    ? `One set of ${size} of a kind. Up to ${wilds}.`
-    : `Two separate sets of ${size} of a kind. Up to ${wilds}.`;
+    ? `One set of ${size} of a kind. Up to ${wild} in it.`
+    : `Two separate sets of ${size} of a kind. Up to ${wild} per set.`;
 };
 
 /* ---------------- Storage ---------------- */
@@ -1029,11 +1035,18 @@ h("h3", null, "The game"),
         h(
           "p",
           null,
-          "The 2s are wild. You can never have more wild cards than natural cards in a set. For ",
-          h("strong", null, "1 of 3"),
-          " you may use one wild; for ",
-          h("strong", null, "2 of 3"),
-          " you may use two, one per set."
+          "The 2s are wild. You can never have more wild cards than natural cards in a set, so the bigger the set, the more wilds it allows. Each contract's limit is shown in its header — and it's per set, so a two-set hand allows that many in each set."
+        ),
+        h("table", { className: "ptable" },
+          h("thead", null,
+            h("tr", null, h("th", null, "Set size"), h("th", null, "Wild 2s per set"))
+          ),
+          h("tbody", null,
+            h("tr", null, h("td", null, "3 of a kind"), h("td", null, "one")),
+            h("tr", null, h("td", null, "4 of a kind"), h("td", null, "two")),
+            h("tr", null, h("td", null, "5 of a kind"), h("td", null, "two")),
+            h("tr", null, h("td", null, "6 of a kind"), h("td", null, "three"))
+          )
         ),
 
         h("h3", null, "After your book is down"),

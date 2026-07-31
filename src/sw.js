@@ -5,7 +5,7 @@
      it's ready and the user decides when to apply it. Nothing auto-reloads
      mid-game. */
 
-const VERSION = "v8";
+const VERSION = "v9";
 const CACHE = `bluff-${VERSION}`;
 
 const CORE = [
